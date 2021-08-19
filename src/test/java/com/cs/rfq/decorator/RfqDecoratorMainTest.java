@@ -19,6 +19,5 @@ public class RfqDecoratorMainTest {
         catch(Exception e){
             fail(e.getMessage());
         }
-
     }
 }
