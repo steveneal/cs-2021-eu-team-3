@@ -22,7 +22,7 @@ public class Rfq implements Serializable {
         //TODO: build a new RFQ setting all fields from data passed in the RFQ json message
         return null;
     }
-    //test message :O
+    //test message :O WIKI
     @Override
     public String toString() {
         return "Rfq{" +
