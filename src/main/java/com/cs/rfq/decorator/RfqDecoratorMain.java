@@ -13,6 +13,8 @@ public class RfqDecoratorMain {
 
         //TODO: create a Spark configuration and set a sensible app name
 
+        // Testing push
+
         //TODO: create a Spark streaming context
 
         //TODO: create a Spark session
