@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RfqDecoratorMainTest {
+public class RfqDecoratorMainTest {
 
     static String[] basicArgs = {};
 
