@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static com.cs.rfq.decorator.extractors.RfqMetadataFieldNames.*;
 
-public class TotalTradesWithEntityAndInstrumentExtractor implements RfqMetadataExtractor {
+public class TotalTradesWithInstrumentExtractor implements RfqMetadataExtractor {
 
     @Override
     public Map<RfqMetadataFieldNames, Object> extractMetaData(Rfq rfq, SparkSession session, Dataset<Row> trades) {
@@ -21,18 +21,16 @@ public class TotalTradesWithEntityAndInstrumentExtractor implements RfqMetadataE
         long pastYearMs = DateTime.now().withMillis(todayMs).minusYears(1).getMillis();
 
         Dataset<Row> filtered = trades
-                .filter(trades.col("SecurityId").equalTo(rfq.getIsin()))
-                .filter(trades.col("EntityId").equalTo(rfq.getEntityId()));
+                .filter(trades.col("SecurityId").equalTo(rfq.getIsin()));
 
         long tradesToday = filtered.filter(trades.col("TradeDate").$greater(new java.sql.Date(todayMs))).count();
         long tradesPastWeek = filtered.filter(trades.col("TradeDate").$greater(new java.sql.Date(pastWeekMs))).count();
         long tradesPastYear = filtered.filter(trades.col("TradeDate").$greater(new java.sql.Date(pastYearMs))).count();
 
         Map<RfqMetadataFieldNames, Object> results = new HashMap<>();
-        results.put(tradesWithEntityAndInstrumentToday, tradesToday);
-        results.put(tradesWithEntityAndInstrumentPastWeek, tradesPastWeek);
-        results.put(tradesWithEntityAndInstrumentPastYear, tradesPastYear);
+        results.put(tradesWithInstrumentToday, tradesToday);
+        results.put(tradesWithInstrumentPastWeek, tradesPastWeek);
+        results.put(tradesWithInstrumentPastYear, tradesPastYear);
         return results;
     }
-
 }
