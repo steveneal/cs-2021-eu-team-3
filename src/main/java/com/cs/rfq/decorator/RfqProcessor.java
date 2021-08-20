@@ -1,14 +1,12 @@
 package com.cs.rfq.decorator;
 
-import com.cs.rfq.decorator.extractors.RfqMetadataExtractor;
-import com.cs.rfq.decorator.extractors.RfqMetadataFieldNames;
-import com.cs.rfq.decorator.extractors.TotalTradesWithEntityAndInstrumentExtractor;
-import com.cs.rfq.decorator.extractors.VolumeTradedWithEntityYTDExtractor;
+import com.cs.rfq.decorator.extractors.*;
 import com.cs.rfq.decorator.publishers.MetadataJsonLogPublisher;
 import com.cs.rfq.decorator.publishers.MetadataPublisher;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,23 +32,32 @@ public class RfqProcessor {
 
     private final MetadataPublisher publisher = new MetadataJsonLogPublisher();
 
-    public RfqProcessor(SparkSession session, JavaStreamingContext streamingContext) {
+    public RfqProcessor(SparkSession session, JavaStreamingContext streamingContext, String path) {
         this.session = session;
         this.streamingContext = streamingContext;
-
+        this.trades = new TradeDataLoader().loadTrades(session, path);
         //TODO: use the TradeDataLoader to load the trade data archives
 
         //TODO: take a close look at how these two extractors are implemented
         extractors.add(new TotalTradesWithEntityAndInstrumentExtractor());
         extractors.add(new VolumeTradedWithEntityYTDExtractor());
+        extractors.add(new TotalTradesWithEntityExtractor());
     }
 
     public void startSocketListener() throws InterruptedException {
         //TODO: stream data from the input socket on localhost:9000
 
+        JavaDStream<String> lines = streamingContext.socketTextStream("localhost", 9000);
+        lines.foreachRDD(rdd -> {
+            Rfq rfq = Rfq.fromJson(rdd.toString());
+            processRfq(rfq);
+        });
+
         //TODO: convert each incoming line to a Rfq object and call processRfq method with it
 
         //TODO: start the streaming context
+        streamingContext.start();
+        streamingContext.awaitTermination();
     }
 
     public void processRfq(Rfq rfq) {

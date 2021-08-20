@@ -24,16 +24,15 @@ public class RfqDecoratorMain {
         //SparkConf conf = new SparkConf().setAppName("Gecko");
         JavaStreamingContext streamingContext = new JavaStreamingContext(spark.getConf(), Durations.seconds(5));
 
-        JavaDStream<String> lines = streamingContext.socketTextStream("localhost", 9000);
-        JavaDStream<String> words = lines.flatMap(x -> Arrays.asList(x.split(" ")).iterator());
+//        JavaDStream<String> lines = streamingContext.socketTextStream("localhost", 9000);
+//        JavaDStream<String> words = lines.flatMap(x -> Arrays.asList(x.split(" ")).iterator());
+//
+//        //print out the results
+//        words.foreachRDD(rdd -> {
+//            rdd.collect().forEach(line -> System.out.println(line));
+//        });
 
-        //print out the results
-        words.foreachRDD(rdd -> {
-            rdd.collect().forEach(line -> System.out.println(line));
-        });
 
-        streamingContext.start();
-        streamingContext.awaitTermination();
 
         spark.stop();
 
