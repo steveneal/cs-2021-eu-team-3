@@ -28,7 +28,7 @@ class TotalTradesWithEntityExtractorTest extends AbstractSparkUnitTest {
 
     @Test
     void willExtractEntityAndInstrumentMetaDataFromTradeDataToday() {
-        TotalTradesWithEntityAndInstrumentExtractor extractor = new TotalTradesWithEntityAndInstrumentExtractor();
+        TotalTradesWithEntityExtractor extractor = new TotalTradesWithEntityExtractor();
         Map<RfqMetadataFieldNames, Object> meta = extractor.extractMetaData(rfq, session, trades);
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithEntityToday);
@@ -39,7 +39,7 @@ class TotalTradesWithEntityExtractorTest extends AbstractSparkUnitTest {
 
     @Test
     void willExtractEntityAndInstrumentMetaDataFromTradeDataWeek() {
-        TotalTradesWithEntityAndInstrumentExtractor extractor = new TotalTradesWithEntityAndInstrumentExtractor();
+        TotalTradesWithEntityExtractor extractor = new TotalTradesWithEntityExtractor();
         Map<RfqMetadataFieldNames, Object> meta = extractor.extractMetaData(rfq, session, trades);
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithEntityPastWeek);
@@ -49,7 +49,7 @@ class TotalTradesWithEntityExtractorTest extends AbstractSparkUnitTest {
 
     @Test
     void willExtractEntityAndInstrumentMetaDataFromTradeDataYear() {
-        TotalTradesWithEntityAndInstrumentExtractor extractor = new TotalTradesWithEntityAndInstrumentExtractor();
+        TotalTradesWithEntityExtractor extractor = new TotalTradesWithEntityExtractor();
         Map<RfqMetadataFieldNames, Object> meta = extractor.extractMetaData(rfq, session, trades);
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithEntityPastYear);
