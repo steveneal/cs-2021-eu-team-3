@@ -1,6 +1,7 @@
 package com.cs.rfq.decorator;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
@@ -8,17 +9,20 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 public class Rfq implements Serializable {
-    private String id;
-    private String isin;
-    private Long traderId;
-    private Long entityId;
-    private Long quantity;
-    private Double price;
-    private String side;
 
+    @SerializedName("id")  private String id;
+    @SerializedName("instrumentId") private String isin;
+    @SerializedName("traderId") private Long traderId;
+    @SerializedName("entityId") private Long entityId;
+    @SerializedName("qty") private Long quantity;
+    @SerializedName("price") private Double price;
+    @SerializedName("side") private String side;
+
+    
     public static Rfq fromJson(String json) {
         //TODO: build a new RFQ setting all fields from data passed in the RFQ json message
-        return null;
+        Gson gson = new Gson();
+        return  gson.fromJson(json, Rfq.class);
     }
 
     @Override
