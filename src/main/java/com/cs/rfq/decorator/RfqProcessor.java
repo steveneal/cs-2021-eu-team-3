@@ -43,6 +43,7 @@ public class RfqProcessor {
         extractors.add(new TotalTradesWithEntityAndInstrumentExtractor());
         extractors.add(new VolumeTradedWithEntityYTDExtractor());
         extractors.add(new TotalTradesWithEntityExtractor());
+        extractors.add(new AverageTradedPriceExtractor());
     }
 
     public void startSocketListener() throws InterruptedException {

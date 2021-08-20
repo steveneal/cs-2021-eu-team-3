@@ -39,9 +39,9 @@ class RfqProcessorTest extends AbstractSparkUnitTest {
     }
 
     @Test
-    void testVolumeTradedYearToDate() { assertEquals(0L, actual.get(volumeTradedYearToDate)); }
+    void testVolumeTradedYearToDate() { assertEquals(750000L, actual.get(volumeTradedYearToDate)); }
     @Test
-    void testTradesWithEntityAndInstrumentPastWeek() { assertEquals(0L, actual.get(tradesWithEntityAndInstrumentPastWeek)); }
+    void testTradesWithEntityAndInstrumentPastWeek() { assertEquals(2L, actual.get(tradesWithEntityAndInstrumentPastWeek)); }
     @Test
     void testTradesWithEntityAndInstrumentToday() { assertEquals(0L, actual.get(tradesWithEntityAndInstrumentToday)); }
     @Test
@@ -51,6 +51,8 @@ class RfqProcessorTest extends AbstractSparkUnitTest {
     @Test
     void testTradesWithEntityPastYear() { assertEquals(5L, actual.get(tradesWithEntityPastYear)); }
     @Test
-    void testTradesWithEntityAndInstrumentPastYear() { assertEquals(0L, actual.get(tradesWithEntityAndInstrumentPastYear)); }
+    void testTradesWithEntityAndInstrumentPastYear() { assertEquals(2L, actual.get(tradesWithEntityAndInstrumentPastYear)); }
+    @Test
+    void testAverageTradedPriceMonthly() { assertEquals(125.977, actual.get(averageTradedPriceMonthly)); }
 
 }

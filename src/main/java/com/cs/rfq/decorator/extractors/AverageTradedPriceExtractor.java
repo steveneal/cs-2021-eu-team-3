@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static com.cs.rfq.decorator.extractors.RfqMetadataFieldNames.*;
 import static org.apache.spark.sql.functions.avg;
+import static org.apache.spark.sql.functions.mean;
 
 public class AverageTradedPriceExtractor implements RfqMetadataExtractor{
 
@@ -22,15 +23,19 @@ public class AverageTradedPriceExtractor implements RfqMetadataExtractor{
         long pastWeekMs = DateTime.now().withMillis(todayMs).minusWeeks(1).getMillis();
 
 
-        Dataset<Row> filtered = trades
-                .filter(trades.col("SecurityId").equalTo(rfq.getIsin()));
 
+        double mean = 0;
+        Dataset<Row> filtered = trades.filter(trades.col("SecurityId").equalTo(rfq.getIsin()));
+        filtered = filtered.filter(trades.col("TradeDate").$greater(new java.sql.Date(pastWeekMs)));
 
-        Dataset<Row> agg = filtered.agg(avg("LastPx"));
-
-        
+        if(filtered.count() > 0){
+            Dataset<Row> meanRdd = filtered.select(mean(filtered.col("LastPx")));
+            mean = meanRdd.first().getDouble(0);
+        }
 
         Map<RfqMetadataFieldNames, Object> results = new HashMap<>();
+        results.put(averageTradedPriceMonthly, mean);
+
         return results;
     }
 
