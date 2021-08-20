@@ -35,8 +35,9 @@ public class RfqProcessor {
     public RfqProcessor(SparkSession session, JavaStreamingContext streamingContext, String path) {
         this.session = session;
         this.streamingContext = streamingContext;
-        this.trades = new TradeDataLoader().loadTrades(session, path);
+
         //TODO: use the TradeDataLoader to load the trade data archives
+        this.trades = new TradeDataLoader().loadTrades(session, path);
 
         //TODO: take a close look at how these two extractors are implemented
         extractors.add(new TotalTradesWithEntityAndInstrumentExtractor());
@@ -60,7 +61,7 @@ public class RfqProcessor {
         streamingContext.awaitTermination();
     }
 
-    public void processRfq(Rfq rfq) {
+     public Map<RfqMetadataFieldNames, Object> processRfqInternal(Rfq rfq) {
         log.info(String.format("Received Rfq: %s", rfq.toString()));
 
         //create a blank map for the metadata to be collected
@@ -71,7 +72,13 @@ public class RfqProcessor {
             metadata.putAll(data.extractMetaData(rfq, session, trades));
         }
 
-        //TODO: publish the metadata
+        // return to main process function
+        return metadata;
+    }
+
+    public void processRfq(Rfq rfq) {
+        // publish
+        Map<RfqMetadataFieldNames, Object> metadata = processRfqInternal(rfq);
         publisher.publishMetadata(metadata);
     }
 }
