@@ -1,7 +1,5 @@
 package com.cs.rfq.decorator;
 
-import javafx.util.Duration;
-import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.streaming.Durations;
