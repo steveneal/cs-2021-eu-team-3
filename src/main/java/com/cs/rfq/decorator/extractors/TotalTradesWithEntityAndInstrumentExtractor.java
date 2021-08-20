@@ -29,9 +29,9 @@ public class TotalTradesWithEntityAndInstrumentExtractor implements RfqMetadataE
         long tradesPastYear = filtered.filter(trades.col("TradeDate").$greater(new java.sql.Date(pastYearMs))).count();
 
         Map<RfqMetadataFieldNames, Object> results = new HashMap<>();
-        results.put(tradesWithEntityToday, tradesToday);
-        results.put(tradesWithEntityPastWeek, tradesPastWeek);
-        results.put(tradesWithEntityPastYear, tradesPastYear);
+        results.put(tradesWithEntityAndInstrumentToday, tradesToday);
+        results.put(tradesWithEntityAndInstrumentPastWeek, tradesPastWeek);
+        results.put(tradesWithEntityAndInstrumentPastYear, tradesPastYear);
         return results;
     }
 
