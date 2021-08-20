@@ -67,7 +67,11 @@ public class RfqProcessor {
         Map<RfqMetadataFieldNames, Object> metadata = new HashMap<>();
 
         //TODO: get metadata from each of the extractors
+        for (RfqMetadataExtractor data: extractors){
+            metadata.putAll(data.extractMetaData(rfq, session, trades));
+        }
 
         //TODO: publish the metadata
+        publisher.publishMetadata(metadata);
     }
 }
