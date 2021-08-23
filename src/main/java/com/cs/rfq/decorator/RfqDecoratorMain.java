@@ -23,15 +23,11 @@ public class RfqDecoratorMain {
 
         JavaStreamingContext streamingContext = new JavaStreamingContext(spark.getConf(), Durations.seconds(5));
 
+        RfqProcessor processor = new RfqProcessor(session, streamingContext, "C:\\exercises\\cs-2021-eu-team-3\\src\\test\\resources\\trades\\trades.json");
+
+        processor.startSocketListener();
+
         spark.stop();
-
-        //TODO: create a Spark configuration and set a sensible app name( DONE)
-
-        //TODO: create a Spark streaming context
-
-        //TODO: create a Spark session
-
-        //TODO: create a new RfqProcessor and set it listening for incoming RFQs
     }
 
 }

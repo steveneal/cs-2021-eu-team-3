@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.spark.sql.functions.substring;
 import static org.apache.spark.sql.functions.sum;
 
 public class RfqProcessor {
@@ -49,8 +50,12 @@ public class RfqProcessor {
 
         JavaDStream<String> lines = streamingContext.socketTextStream("localhost", 9000);
         lines.foreachRDD(rdd -> {
-            Rfq rfq = Rfq.fromJson(rdd.toString());
-            processRfq(rfq);
+            List<String> jsonData = rdd.collect();
+            if(jsonData.size() != 0){
+                String jsonString = jsonData.stream().reduce("", (subStr, element) -> subStr + element);
+                Rfq rfq = Rfq.fromJson(jsonString);
+                processRfq(rfq);
+            }
         });
 
         streamingContext.start();
