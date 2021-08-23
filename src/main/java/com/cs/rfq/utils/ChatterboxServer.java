@@ -126,7 +126,19 @@ public class ChatterboxServer {
                     //naive polling of System.in to check for input and allow thread to be interrupted
                     if (System.in.available() > 0) {
                         String line = in.readLine();
-                        int number = Integer.parseInt(line);
+                        int number = 0;
+                        try {
+                            number = Integer.parseInt(line);
+                            if (number > testRFQ.length - 1)
+                            {
+                                number = 0;
+                            }
+                        }
+                        catch(NumberFormatException e)
+                        {
+                            log("Invalid number","Default RFQ sent");
+                        }
+
                         out.println(testRFQ[number]);
                         out.flush();
                         log("sent", line);
