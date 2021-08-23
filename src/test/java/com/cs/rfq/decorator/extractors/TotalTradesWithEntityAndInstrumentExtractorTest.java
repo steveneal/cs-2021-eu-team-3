@@ -33,7 +33,7 @@ class TotalTradesWithEntityAndInstrumentExtractorTest extends AbstractSparkUnitT
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithEntityAndInstrumentToday);
 
-        assertEquals(1L, tradeWithEntityT);
+        assertEquals(0L, tradeWithEntityT);
     }
 
     @Test
