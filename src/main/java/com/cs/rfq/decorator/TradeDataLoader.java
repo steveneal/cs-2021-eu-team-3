@@ -16,6 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.spark_project.jetty.util.log.Log;
 import scala.xml.dtd.impl.Base;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import static org.apache.spark.sql.types.DataTypes.*;
 
 public class TradeDataLoader {
@@ -42,6 +47,17 @@ public class TradeDataLoader {
                         new StructField("OrderId", LongType, false, Metadata.empty()),
                         new StructField("Currency", StringType, false, Metadata.empty())
                 });;
+
+        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+
+            String line;
+            while((line = br.readLine()) != null){
+                System.out.println(line);
+            }
+
+        } catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
 
         //TODO: load the trades dataset
         Dataset<Row> trades = session.read().schema(schema).json(path);
