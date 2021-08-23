@@ -21,18 +21,18 @@ class RfqProcessorTest extends AbstractSparkUnitTest {
 
     @BeforeEach
     public void setup() {
-        String filePath = getClass().getResource("loader-test-trades-2021.json").getPath();
+        String filePath = getClass().getResource("loader-test-trades.json").getPath();
         rfqProcessor = new RfqProcessor(session, null, filePath);
 
         String validRfqJson = "{" +
-                "'id': '123ABC', " +
-                "'traderId': 3351266293154445953, " +
-                "'entityId': 5561279226039690843, " +
-                "'instrumentId': 'AT0000383864', " +
-                "'qty': 250000, " +
-                "'price': 1.58, " +
-        "'side': 'B' " +
-                "}";
+            "'id': '123ABC', " +
+            "'traderId': 3351266293154445953, " +
+            "'entityId': 5561279226039690843, " +
+            "'instrumentId': 'AT0000383864', " +
+            "'qty': 250000, " +
+            "'price': 1.58, " +
+            "'side': 'B' " +
+        "}";
 
         Rfq rfq = Rfq.fromJson(validRfqJson);
         actual = rfqProcessor.processRfqInternal(rfq);
@@ -47,9 +47,9 @@ class RfqProcessorTest extends AbstractSparkUnitTest {
     @Test
     void testTradesWithEntityToday() { assertEquals(0L, actual.get(tradesWithEntityToday)); }
     @Test
-    void testTradesWithEntityPastWeek() { assertEquals(2L, actual.get(tradesWithEntityPastWeek)); }
+    void testTradesWithEntityPastWeek() { assertEquals(0L, actual.get(tradesWithEntityPastWeek)); }
     @Test
-    void testTradesWithEntityPastYear() { assertEquals(5L, actual.get(tradesWithEntityPastYear)); }
+    void testTradesWithEntityPastYear() { assertEquals(0L, actual.get(tradesWithEntityPastYear)); }
     @Test
     void testTradesWithEntityAndInstrumentPastYear() { assertEquals(0L, actual.get(tradesWithEntityAndInstrumentPastYear)); }
 
