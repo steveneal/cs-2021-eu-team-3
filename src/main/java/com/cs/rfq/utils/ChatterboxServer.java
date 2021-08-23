@@ -1,8 +1,12 @@
 package com.cs.rfq.utils;
 
+import com.ning.compress.BufferRecycler;
+import org.spark_project.guava.io.CharStreams;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.Buffer;
 
 /**
  * Simple chat server capable of sending and receiving String lines on separate in/out port numbers.
@@ -17,6 +21,48 @@ public class ChatterboxServer {
 
     //monitors SERVER_PORT_OUT for socket closing
     private static Thread rfqSenderInputThread;
+
+    private static String [] testRFQ = {"{\n" +
+            "'id': 9315444593154445,\n" +
+            "'traderId': 3351266293154445953,\n" +
+            "'entityId': 5561279226039690843,\n" +
+            "'instrumentId': 'AT0000383864',\n" +
+            "'qty': 250000,\n" +
+            "'price': 1.58,\n" +
+            "'side': 'B'\n" +
+            "}","{\n" +
+            "'id': 9315444593134445,\n" +
+            "'traderId': 3351266293154445953,\n" +
+            "'entityId': 5561279226039690843,\n" +
+            "'instrumentId': 'AT0000383864',\n" +
+            "'qty': 250000,\n" +
+            "'price': 1.58,\n" +
+            "'side': 'B'\n" +
+            "}","{\n" +
+            "'id': 9315444593154423,\n" +
+            "'traderId': 3351266293154445953,\n" +
+            "'entityId': 5561279226039690843,\n" +
+            "'instrumentId': 'AT0000383864',\n" +
+            "'qty': 250000,\n" +
+            "'price': 1.58,\n" +
+            "'side': 'B'\n" +
+            "}","{\n" +
+            "'id': 9315444593156645,\n" +
+            "'traderId': 3351266293154445953,\n" +
+            "'entityId': 5561279226039690843,\n" +
+            "'instrumentId': 'AT0000383864',\n" +
+            "'qty': 250000,\n" +
+            "'price': 1.58,\n" +
+            "'side': 'B'\n" +
+            "}","{\n" +
+            "'id': 9315444592754445,\n" +
+            "'traderId': 3351266293154445953,\n" +
+            "'entityId': 5561279226039690843,\n" +
+            "'instrumentId': 'AT0000383864',\n" +
+            "'qty': 250000,\n" +
+            "'price': 1.58,\n" +
+            "'side': 'B'\n" +
+            "}"};
 
     public static void main(String[] args) throws Exception {
         runSender();
@@ -80,11 +126,26 @@ public class ChatterboxServer {
                     //naive polling of System.in to check for input and allow thread to be interrupted
                     if (System.in.available() > 0) {
                         String line = in.readLine();
-                        out.println(line);
+                        int number = 0;
+                        try {
+                            number = Integer.parseInt(line);
+                            if (number > testRFQ.length - 1)
+                            {
+                                number = 0;
+                            }
+                        }
+                        catch(NumberFormatException e)
+                        {
+                            log("Invalid number","Default RFQ sent");
+                        }
+
+                        out.println(testRFQ[number]);
                         out.flush();
                         log("sent", line);
                     }  else {
+
                         Thread.sleep(500);
+
                     }
                 } while (true);
 
