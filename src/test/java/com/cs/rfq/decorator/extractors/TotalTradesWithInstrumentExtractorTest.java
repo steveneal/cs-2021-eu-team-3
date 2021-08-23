@@ -32,7 +32,6 @@ class TotalTradesWithInstrumentExtractorTest extends AbstractSparkUnitTest {
         Map<RfqMetadataFieldNames, Object> meta = extractor.extractMetaData(rfq, session, trades);
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithInstrumentToday);
-
         assertEquals(0L, tradeWithEntityT);
     }
 

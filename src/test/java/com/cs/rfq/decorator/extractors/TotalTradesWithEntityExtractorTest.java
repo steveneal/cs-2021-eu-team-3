@@ -33,7 +33,7 @@ class TotalTradesWithEntityExtractorTest extends AbstractSparkUnitTest {
 
         Object tradeWithEntityT = meta.get(RfqMetadataFieldNames.tradesWithEntityToday);
 
-        assertEquals(1L, tradeWithEntityT);
+        assertEquals(0L, tradeWithEntityT);
     }
 
 
