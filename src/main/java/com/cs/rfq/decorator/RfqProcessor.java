@@ -1,6 +1,7 @@
 package com.cs.rfq.decorator;
 
 import com.cs.rfq.decorator.extractors.*;
+import com.cs.rfq.decorator.publishers.MetadataJSONFilePublisher;
 import com.cs.rfq.decorator.publishers.MetadataJsonLogPublisher;
 import com.cs.rfq.decorator.publishers.MetadataPublisher;
 import org.apache.spark.sql.Dataset;
@@ -31,7 +32,7 @@ public class RfqProcessor {
 
     private final List<RfqMetadataExtractor> extractors = new ArrayList<>();
 
-    private final MetadataPublisher publisher = new MetadataJsonLogPublisher();
+    private final MetadataPublisher publisher = new MetadataJSONFilePublisher();
 
     public RfqProcessor(SparkSession session, JavaStreamingContext streamingContext, String path) {
         this.session = session;
@@ -59,6 +60,7 @@ public class RfqProcessor {
                 processRfq(rfq);
             }
         });
+
 
         streamingContext.start();
         streamingContext.awaitTermination();
