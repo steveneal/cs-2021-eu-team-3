@@ -48,17 +48,6 @@ public class TradeDataLoader {
                         new StructField("Currency", StringType, false, Metadata.empty())
                 });;
 
-        try(BufferedReader br = new BufferedReader(new FileReader(path))){
-
-            String line;
-            while((line = br.readLine()) != null){
-                System.out.println(line);
-            }
-
-        } catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-
         //TODO: load the trades dataset
         Dataset<Row> trades = session.read().schema(schema).json(path);
 
